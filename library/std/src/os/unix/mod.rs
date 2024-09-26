@@ -61,6 +61,8 @@ mod platform {
     pub use crate::os::illumos::*;
     #[cfg(target_os = "ios")]
     pub use crate::os::ios::*;
+    #[cfg(target_os = "kallistios")]
+    pub use crate::os::kallistios::*;
     #[cfg(target_os = "l4re")]
     pub use crate::os::l4re::*;
     #[cfg(target_os = "linux")]

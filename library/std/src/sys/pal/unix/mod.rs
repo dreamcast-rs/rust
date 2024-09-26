@@ -82,6 +82,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
             target_os = "l4re",
             target_os = "horizon",
             target_os = "vita",
+            target_os = "kallistios",
             // The poll on Darwin doesn't set POLLNVAL for closed fds.
             target_vendor = "apple",
         )))]
@@ -137,6 +138,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
             target_os = "vxworks",
             target_os = "l4re",
             target_os = "horizon",
+            target_os = "kallistios",
             target_os = "vita",
         )))]
         {
@@ -164,6 +166,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "horizon",
+            target_os = "kallistios",
             // Unikraft's `signal` implementation is currently broken:
             // https://github.com/unikraft/lib-musl/issues/57
             target_vendor = "unikraft",
@@ -209,6 +212,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
     target_os = "emscripten",
     target_os = "fuchsia",
     target_os = "horizon",
+    target_os = "kallistios",
 )))]
 static ON_BROKEN_PIPE_FLAG_USED: crate::sync::atomic::AtomicBool =
     crate::sync::atomic::AtomicBool::new(false);
@@ -218,6 +222,7 @@ static ON_BROKEN_PIPE_FLAG_USED: crate::sync::atomic::AtomicBool =
     target_os = "emscripten",
     target_os = "fuchsia",
     target_os = "horizon",
+    target_os = "kallistios",
 )))]
 pub(crate) fn on_broken_pipe_flag_used() -> bool {
     ON_BROKEN_PIPE_FLAG_USED.load(crate::sync::atomic::Ordering::Relaxed)
@@ -419,7 +424,7 @@ cfg_if::cfg_if! {
     }
 }
 
-#[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "vita"))]
+#[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "vita"))]
 mod unsupported {
     use crate::io;
 

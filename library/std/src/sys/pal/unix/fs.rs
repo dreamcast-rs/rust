@@ -50,6 +50,7 @@ use libc::fstatat64;
     target_os = "illumos",
     target_os = "aix",
     target_os = "nto",
+    target_os = "kallistios",
     target_os = "vita",
     all(target_os = "linux", target_env = "musl"),
 ))]
@@ -69,6 +70,7 @@ use libc::readdir64_r;
     target_os = "redox",
     target_os = "aix",
     target_os = "nto",
+    target_os = "kallistios",
     target_os = "vita",
     target_os = "hurd",
 )))]
@@ -280,6 +282,7 @@ unsafe impl Sync for Dir {}
     target_os = "redox",
     target_os = "aix",
     target_os = "nto",
+    target_os = "kallistios",
     target_os = "vita",
     target_os = "hurd",
 ))]
@@ -304,6 +307,7 @@ pub struct DirEntry {
     target_os = "redox",
     target_os = "aix",
     target_os = "nto",
+    target_os = "kallistios",
     target_os = "vita",
     target_os = "hurd",
 ))]
@@ -314,6 +318,7 @@ struct dirent64_min {
         target_os = "illumos",
         target_os = "aix",
         target_os = "nto",
+        target_os = "kallistios",
         target_os = "vita",
     )))]
     d_type: u8,
@@ -328,6 +333,7 @@ struct dirent64_min {
     target_os = "redox",
     target_os = "aix",
     target_os = "nto",
+    target_os = "kallistios",
     target_os = "vita",
     target_os = "hurd",
 )))]
@@ -481,6 +487,7 @@ impl FileAttr {
         target_os = "vxworks",
         target_os = "espidf",
         target_os = "horizon",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "hurd",
     )))]
@@ -500,7 +507,7 @@ impl FileAttr {
         SystemTime::new(self.stat.st_mtime as i64, 0)
     }
 
-    #[cfg(any(target_os = "horizon", target_os = "hurd"))]
+    #[cfg(any(target_os = "horizon", target_os = "kallistios", target_os = "hurd"))]
     pub fn modified(&self) -> io::Result<SystemTime> {
         SystemTime::new(self.stat.st_mtim.tv_sec as i64, self.stat.st_mtim.tv_nsec as i64)
     }
@@ -509,6 +516,7 @@ impl FileAttr {
         target_os = "vxworks",
         target_os = "espidf",
         target_os = "horizon",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "hurd",
     )))]
@@ -528,7 +536,7 @@ impl FileAttr {
         SystemTime::new(self.stat.st_atime as i64, 0)
     }
 
-    #[cfg(any(target_os = "horizon", target_os = "hurd"))]
+    #[cfg(any(target_os = "horizon", target_os = "kallistios", target_os = "hurd"))]
     pub fn accessed(&self) -> io::Result<SystemTime> {
         SystemTime::new(self.stat.st_atim.tv_sec as i64, self.stat.st_atim.tv_nsec as i64)
     }
@@ -688,6 +696,7 @@ impl Iterator for ReadDir {
         target_os = "illumos",
         target_os = "aix",
         target_os = "nto",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "hurd",
     ))]
@@ -758,7 +767,7 @@ impl Iterator for ReadDir {
                     continue;
                 }
 
-                #[cfg(not(target_os = "vita"))]
+                #[cfg(not(any(target_os = "kallistios", target_os = "vita")))]
                 let entry = dirent64_min {
                     d_ino: *offset_ptr!(entry_ptr, d_ino) as u64,
                     #[cfg(not(any(
@@ -770,7 +779,7 @@ impl Iterator for ReadDir {
                     d_type: *offset_ptr!(entry_ptr, d_type) as u8,
                 };
 
-                #[cfg(target_os = "vita")]
+                #[cfg(any(target_os = "kallistios", target_os = "vita"))]
                 let entry = dirent64_min { d_ino: 0u64 };
 
                 return Some(Ok(DirEntry {
@@ -791,6 +800,7 @@ impl Iterator for ReadDir {
         target_os = "illumos",
         target_os = "aix",
         target_os = "nto",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "hurd",
     )))]
@@ -929,6 +939,7 @@ impl DirEntry {
         target_os = "vxworks",
         target_os = "aix",
         target_os = "nto",
+        target_os = "kallistios",
         target_os = "vita",
     ))]
     pub fn file_type(&self) -> io::Result<FileType> {
@@ -942,6 +953,7 @@ impl DirEntry {
         target_os = "vxworks",
         target_os = "aix",
         target_os = "nto",
+        target_os = "kallistios",
         target_os = "vita",
     )))]
     pub fn file_type(&self) -> io::Result<FileType> {
@@ -970,6 +982,7 @@ impl DirEntry {
         target_os = "vxworks",
         target_os = "espidf",
         target_os = "horizon",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "aix",
         target_os = "nto",
@@ -1026,6 +1039,7 @@ impl DirEntry {
         target_os = "redox",
         target_os = "aix",
         target_os = "nto",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "hurd",
     )))]
@@ -1041,6 +1055,7 @@ impl DirEntry {
         target_os = "redox",
         target_os = "aix",
         target_os = "nto",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "hurd",
     ))]
@@ -1313,7 +1328,7 @@ impl File {
     }
 
     pub fn set_times(&self, times: FileTimes) -> io::Result<()> {
-        #[cfg(not(any(target_os = "redox", target_os = "espidf", target_os = "horizon")))]
+        #[cfg(not(any(target_os = "redox", target_os = "espidf", target_os = "horizon", target_os = "kallistios")))]
         let to_timespec = |time: Option<SystemTime>| match time {
             Some(time) if let Some(ts) = time.t.to_timespec() => Ok(ts),
             Some(time) if time > crate::sys::time::UNIX_EPOCH => Err(io::const_io_error!(
@@ -1327,7 +1342,7 @@ impl File {
             None => Ok(libc::timespec { tv_sec: 0, tv_nsec: libc::UTIME_OMIT as _ }),
         };
         cfg_if::cfg_if! {
-            if #[cfg(any(target_os = "redox", target_os = "espidf", target_os = "horizon"))] {
+            if #[cfg(any(target_os = "redox", target_os = "espidf", target_os = "horizon", target_os = "kallistios"))] {
                 // Redox doesn't appear to support `UTIME_OMIT`.
                 // ESP-IDF and HorizonOS do not support `futimens` at all and the behavior for those OS is therefore
                 // the same as for Redox.
@@ -1742,7 +1757,7 @@ pub fn link(original: &Path, link: &Path) -> io::Result<()> {
     run_path_with_cstr(original, &|original| {
         run_path_with_cstr(link, &|link| {
             cfg_if::cfg_if! {
-                if #[cfg(any(target_os = "vxworks", target_os = "redox", target_os = "android", target_os = "espidf", target_os = "horizon", target_os = "vita"))] {
+                if #[cfg(any(target_os = "vxworks", target_os = "redox", target_os = "android", target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "vita"))] {
                     // VxWorks, Redox and ESP-IDF lack `linkat`, so use `link` instead. POSIX leaves
                     // it implementation-defined whether `link` follows symlinks, so rely on the
                     // `symlink_hard_link` test in library/std/src/fs/tests.rs to check the behavior.
@@ -1981,6 +1996,7 @@ pub use remove_dir_impl::remove_dir_all;
     target_os = "redox",
     target_os = "espidf",
     target_os = "horizon",
+    target_os = "kallistios",
     target_os = "vita",
     target_os = "nto",
     miri
@@ -1994,6 +2010,7 @@ mod remove_dir_impl {
     target_os = "redox",
     target_os = "espidf",
     target_os = "horizon",
+    target_os = "kallistios",
     target_os = "vita",
     target_os = "nto",
     miri

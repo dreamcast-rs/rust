@@ -45,12 +45,12 @@ pub fn cvt_gai(err: c_int) -> io::Result<()> {
         return Err(io::Error::last_os_error());
     }
 
-    #[cfg(not(target_os = "espidf"))]
+    #[cfg(not(any(target_os = "espidf", target_os = "kallistios")))]
     let detail = unsafe {
         str::from_utf8(CStr::from_ptr(libc::gai_strerror(err)).to_bytes()).unwrap().to_owned()
     };
 
-    #[cfg(target_os = "espidf")]
+    #[cfg(any(target_os = "espidf", target_os = "kallistios"))]
     let detail = "";
 
     Err(io::Error::new(
