@@ -19,7 +19,7 @@ compiler_builtins = "0.1.0"
 cfg-if = { version = "1.0", features = ['rustc-dep-of-std'] }
 
 [target.'cfg(not(all(windows, target_env = "msvc")))'.dependencies]
-libc = { version = "0.2", default-features = false }
+libc = { path = "/opt/toolchains/dc/rust/libc", default-features = false }
 
 [lints.rust.unexpected_cfgs]
 level = "warn"
