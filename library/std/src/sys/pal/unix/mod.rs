@@ -425,6 +425,10 @@ cfg_if::cfg_if! {
     } else if #[cfg(all(target_os = "linux", target_env = "uclibc"))] {
         #[link(name = "dl")]
         extern "C" {}
+    } else if #[cfg(target_os = "kallistios")] {
+        #[link(name = "kallisti", kind = "static", modifiers = "-bundle")]
+        #[link(name = "pthread", kind = "static", modifiers = "-bundle")]
+        extern "C" {}
     } else if #[cfg(target_os = "vita")] {
         #[link(name = "pthread", kind = "static", modifiers = "-bundle")]
         extern "C" {}
