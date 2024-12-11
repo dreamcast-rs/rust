@@ -77,6 +77,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
             target_os = "redox",
             target_os = "l4re",
             target_os = "horizon",
+            target_os = "kallistios",
             target_os = "vita",
             target_os = "rtems",
             // The poll on Darwin doesn't set POLLNVAL for closed fds.
@@ -135,6 +136,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
             target_os = "vxworks",
             target_os = "l4re",
             target_os = "horizon",
+            target_os = "kallistios",
             target_os = "vita",
         )))]
         {
@@ -163,6 +165,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "horizon",
+            target_os = "kallistios",
             target_os = "vxworks",
             target_os = "vita",
             // Unikraft's `signal` implementation is currently broken:
@@ -211,6 +214,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
     target_os = "fuchsia",
     target_os = "horizon",
     target_os = "vxworks",
+    target_os = "kallistios",
     target_os = "vita",
 )))]
 static ON_BROKEN_PIPE_FLAG_USED: crate::sync::atomic::AtomicBool =
@@ -222,6 +226,7 @@ static ON_BROKEN_PIPE_FLAG_USED: crate::sync::atomic::AtomicBool =
     target_os = "fuchsia",
     target_os = "horizon",
     target_os = "vxworks",
+    target_os = "kallistios",
     target_os = "vita",
     target_os = "nuttx",
 )))]
@@ -421,13 +426,17 @@ cfg_if::cfg_if! {
     } else if #[cfg(all(target_os = "linux", target_env = "uclibc"))] {
         #[link(name = "dl")]
         extern "C" {}
+    } else if #[cfg(target_os = "kallistios")] {
+        #[link(name = "kallisti", kind = "static", modifiers = "-bundle")]
+        #[link(name = "pthread", kind = "static", modifiers = "-bundle")]
+        extern "C" {}
     } else if #[cfg(target_os = "vita")] {
         #[link(name = "pthread", kind = "static", modifiers = "-bundle")]
         extern "C" {}
     }
 }
 
-#[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "vita", target_os = "nuttx"))]
+#[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "vita", target_os = "nuttx"))]
 mod unsupported {
     use crate::io;
 
