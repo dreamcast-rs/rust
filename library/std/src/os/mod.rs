@@ -151,6 +151,8 @@ pub mod hurd;
 pub mod illumos;
 #[cfg(target_os = "ios")]
 pub mod ios;
+#[cfg(target_os = "kallistios")]
+pub mod kallistios;
 #[cfg(target_os = "l4re")]
 pub mod l4re;
 #[cfg(target_os = "macos")]

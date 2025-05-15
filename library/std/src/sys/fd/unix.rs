@@ -79,6 +79,7 @@ const fn max_iov() -> usize {
     target_os = "nto",
     target_os = "openbsd",
     target_os = "horizon",
+    target_os = "kallistios",
     target_os = "vita",
     target_vendor = "apple",
     target_os = "cygwin",
@@ -107,6 +108,7 @@ impl FileDesc {
     #[cfg(not(any(
         target_os = "espidf",
         target_os = "horizon",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "nuttx"
     )))]
@@ -124,6 +126,7 @@ impl FileDesc {
     #[cfg(any(
         target_os = "espidf",
         target_os = "horizon",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "nuttx"
     ))]
@@ -136,6 +139,7 @@ impl FileDesc {
         cfg!(not(any(
             target_os = "espidf",
             target_os = "horizon",
+            target_os = "kallistios",
             target_os = "vita",
             target_os = "nuttx"
         )))
@@ -335,6 +339,7 @@ impl FileDesc {
     #[cfg(not(any(
         target_os = "espidf",
         target_os = "horizon",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "nuttx"
     )))]
@@ -352,6 +357,7 @@ impl FileDesc {
     #[cfg(any(
         target_os = "espidf",
         target_os = "horizon",
+        target_os = "kallistios",
         target_os = "vita",
         target_os = "nuttx"
     ))]
@@ -364,6 +370,7 @@ impl FileDesc {
         cfg!(not(any(
             target_os = "espidf",
             target_os = "horizon",
+            target_os = "kallistios",
             target_os = "vita",
             target_os = "nuttx"
         )))
@@ -551,7 +558,7 @@ impl FileDesc {
     #[cfg(any(
         all(
             target_env = "newlib",
-            not(any(target_os = "espidf", target_os = "horizon", target_os = "vita"))
+            not(any(target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "vita"))
         ),
         target_os = "solaris",
         target_os = "illumos",
@@ -575,9 +582,9 @@ impl FileDesc {
             Ok(())
         }
     }
-    #[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "vita"))]
+    #[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "vita"))]
     pub fn set_cloexec(&self) -> io::Result<()> {
-        // FD_CLOEXEC is not supported in ESP-IDF, Horizon OS and Vita but there's no need to,
+        // FD_CLOEXEC is not supported in ESP-IDF, Horizon OS, KallistiOS, and Vita but there's no need to,
         // because none of them supports spawning processes.
         Ok(())
     }

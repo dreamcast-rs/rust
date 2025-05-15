@@ -41,6 +41,7 @@ fn main() {
         || target_os == "espidf"
         || target_os.starts_with("solid")
         || (target_vendor == "nintendo" && target_env == "newlib")
+        || target_os == "kallistios"
         || target_os == "vita"
         || target_os == "aix"
         || target_os == "nto"
