@@ -79,6 +79,7 @@ pub fn args() -> Args {
     target_os = "redox",
     target_os = "vxworks",
     target_os = "horizon",
+    target_os = "kallistios",
     target_os = "aix",
     target_os = "nto",
     target_os = "hurd",

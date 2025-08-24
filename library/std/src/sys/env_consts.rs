@@ -136,6 +136,17 @@ pub mod os {
     pub const EXE_EXTENSION: &str = "elf";
 }
 
+#[cfg(target_os = "kallistios")]
+pub mod os {
+    pub const FAMILY: &str = "unix";
+    pub const OS: &str = "kallistios";
+    pub const DLL_PREFIX: &str = "lib";
+    pub const DLL_SUFFIX: &str = ".so";
+    pub const DLL_EXTENSION: &str = "so";
+    pub const EXE_SUFFIX: &str = ".elf";
+    pub const EXE_EXTENSION: &str = "elf";
+}
+
 #[cfg(target_os = "hurd")]
 pub mod os {
     pub const FAMILY: &str = "unix";

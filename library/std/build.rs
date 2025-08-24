@@ -2,6 +2,7 @@ use std::env;
 
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo::rustc-check-cfg=cfg(target_os, values(\"kallistios\"))");
     let target_arch = env::var("CARGO_CFG_TARGET_ARCH").expect("CARGO_CFG_TARGET_ARCH was not set");
     let target_os = env::var("CARGO_CFG_TARGET_OS").expect("CARGO_CFG_TARGET_OS was not set");
     let target_vendor =
@@ -41,6 +42,7 @@ fn main() {
         || target_os == "espidf"
         || target_os.starts_with("solid")
         || (target_vendor == "nintendo" && target_env == "newlib")
+        || target_os == "kallistios"
         || target_os == "vita"
         || target_os == "aix"
         || target_os == "nto"

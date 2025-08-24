@@ -523,7 +523,7 @@ pub fn current_exe() -> io::Result<PathBuf> {
     path.canonicalize()
 }
 
-#[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "vita"))]
+#[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "vita"))]
 pub fn current_exe() -> io::Result<PathBuf> {
     super::unsupported::unsupported()
 }

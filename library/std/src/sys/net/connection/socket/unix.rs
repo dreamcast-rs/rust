@@ -1,6 +1,6 @@
 use libc::{MSG_PEEK, c_int, c_void, size_t, sockaddr, socklen_t};
 
-#[cfg(not(any(target_os = "espidf", target_os = "nuttx")))]
+#[cfg(not(any(target_os = "espidf", target_os = "kallistios", target_os = "nuttx")))]
 use crate::ffi::CStr;
 use crate::io::{self, BorrowedBuf, BorrowedCursor, IoSlice, IoSliceMut};
 use crate::net::{Shutdown, SocketAddr};
@@ -45,14 +45,14 @@ pub fn cvt_gai(err: c_int) -> io::Result<()> {
         return Err(io::Error::last_os_error());
     }
 
-    #[cfg(not(any(target_os = "espidf", target_os = "nuttx")))]
+    #[cfg(not(any(target_os = "espidf", target_os = "kallistios", target_os = "nuttx")))]
     let detail = unsafe {
         // We can't always expect a UTF-8 environment. When we don't get that luxury,
         // it's better to give a low-quality error message than none at all.
         CStr::from_ptr(libc::gai_strerror(err)).to_string_lossy()
     };
 
-    #[cfg(any(target_os = "espidf", target_os = "nuttx"))]
+    #[cfg(any(target_os = "espidf", target_os = "kallistios", target_os = "nuttx"))]
     let detail = "";
 
     Err(io::Error::new(

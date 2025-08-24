@@ -1,4 +1,4 @@
-#[cfg_attr(any(target_os = "espidf", target_os = "horizon", target_os = "nuttx"), allow(unused))]
+#[cfg_attr(any(target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "nuttx"), allow(unused))]
 mod common;
 
 cfg_if::cfg_if! {
@@ -8,7 +8,7 @@ cfg_if::cfg_if! {
     } else if #[cfg(target_os = "vxworks")] {
         mod vxworks;
         use vxworks as imp;
-    } else if #[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "vita", target_os = "nuttx"))] {
+    } else if #[cfg(any(target_os = "espidf", target_os = "horizon", target_os = "kallistios", target_os = "vita", target_os = "nuttx"))] {
         mod unsupported;
         use unsupported as imp;
         pub use unsupported::output;
